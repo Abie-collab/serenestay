@@ -15,8 +15,8 @@ class AdminDashboardController extends Controller
     {
         $stats = [
             'total_rooms' => Room::count(),
-            'available_rooms' => Room::where('status', 'active')->count(),
-            'booked_rooms' => Room::where('status', 'maintenance')->count(),
+            'available_rooms' => Room::where('status', 'available')->count(),
+            'booked_rooms' => Room::where('status', 'booked')->count(),
             'total_categories' => Category::count(),
         ];
         return view('admin.dashboard', compact('stats'));
@@ -40,28 +40,26 @@ class AdminDashboardController extends Controller
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'price_per_night' => 'required|numeric|min:0',
-            'status' => 'required|in:active,inactive,maintenance',
+            'status' => 'required|in:available,booked,maintenance',
             'short_description' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'size_sqm' => 'nullable|numeric|min:0',
-            'size_sqft' => 'nullable|numeric|min:0',
-            'max_guests' => 'nullable|integer|min:1',
-            'bed_type' => 'nullable|string|max:255',
-            'view_type' => 'nullable|string|max:255',
-            'badge' => 'nullable|string|max:255',
-            'is_featured' => 'nullable|boolean',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $validated['slug'] = $this->uniqueSlug($validated['title']);
-        $validated['is_featured'] = $request->boolean('is_featured');
 
-        if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $request->file('thumbnail')->store('rooms', 'public');
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('rooms', 'public');
         }
 
         Room::create($validated);
         return redirect()->route('admin.rooms')->with('success', 'Room created successfully!');
+    }
+
+    public function showRoom(Room $room)
+    {
+        $room->load('category');
+        return view('admin.rooms.show', compact('room'));
     }
 
     public function editRoom(Room $room)
@@ -76,31 +74,22 @@ class AdminDashboardController extends Controller
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'price_per_night' => 'required|numeric|min:0',
-            'status' => 'required|in:active,inactive,maintenance',
+            'status' => 'required|in:available,booked,maintenance',
             'short_description' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'size_sqm' => 'nullable|numeric|min:0',
-            'size_sqft' => 'nullable|numeric|min:0',
-            'max_guests' => 'nullable|integer|min:1',
-            'bed_type' => 'nullable|string|max:255',
-            'view_type' => 'nullable|string|max:255',
-            'badge' => 'nullable|string|max:255',
-            'is_featured' => 'nullable|boolean',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        $validated['is_featured'] = $request->boolean('is_featured');
 
         // Only regenerate the slug if the title actually changed.
         if ($validated['title'] !== $room->title) {
             $validated['slug'] = $this->uniqueSlug($validated['title'], $room->id);
         }
 
-        if ($request->hasFile('thumbnail')) {
-            if ($room->thumbnail) {
-                Storage::disk('public')->delete($room->thumbnail);
+        if ($request->hasFile('image')) {
+            if ($room->image) {
+                Storage::disk('public')->delete($room->image);
             }
-            $validated['thumbnail'] = $request->file('thumbnail')->store('rooms', 'public');
+            $validated['image'] = $request->file('image')->store('rooms', 'public');
         }
 
         $room->update($validated);
@@ -109,8 +98,8 @@ class AdminDashboardController extends Controller
 
     public function deleteRoom(Room $room)
     {
-        if ($room->thumbnail) {
-            Storage::disk('public')->delete($room->thumbnail);
+        if ($room->image) {
+            Storage::disk('public')->delete($room->image);
         }
         $room->delete();
         return redirect()->route('admin.rooms')->with('success', 'Room deleted successfully!');

@@ -18,7 +18,7 @@
         <div class="auth-card" style="max-width: 550px;">
             <!-- Branding -->
             <div class="text-center mb-4">
-                <a href="index.html" class="navbar-brand fs-2 fw-bold text-dark text-decoration-none">Serene<span style="color: var(--primary-color);">Stay</span></a>
+                <a href="{{ url('/') }}" class="navbar-brand fs-2 fw-bold text-dark text-decoration-none">Serene<span style="color: var(--primary-color);">Stay</span></a>
                 <p class="text-muted small mt-2">Become a member of the SereneStay Club today for premium benefits.</p>
             </div>
 
@@ -93,7 +93,7 @@
             </div>
 
             <div class="text-center mt-4">
-                <a href="index.blade.php" class="text-muted small text-decoration-none"><i class="fa-solid fa-arrow-left-long me-2"></i>Back to Home</a>
+                <a href="{{ url('/') }}" class="text-muted small text-decoration-none"><i class="fa-solid fa-arrow-left-long me-2"></i>Back to Home</a>
             </div>
         </div>
     </main>

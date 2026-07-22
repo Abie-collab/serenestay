@@ -16,25 +16,19 @@ class Room extends Model
         'short_description',
         'description',
         'price_per_night',
-        'size_sqm',
-        'size_sqft',
-        'max_guests',
-        'bed_type',
-        'view_type',
-        'thumbnail',
-        'badge',
-        'average_rating',
-        'reviews_count',
-        'is_featured',
+        'image',
         'status',
     ];
 
     protected $casts = [
-        'is_featured' => 'boolean',
-        'average_rating' => 'decimal:1',
         'price_per_night' => 'decimal:2',
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+    
     public function category()
     {
         return $this->belongsTo(Category::class);

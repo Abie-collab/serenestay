@@ -44,46 +44,79 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($categories as $category)
-                <tr>
-                    <td>{{ $category->id }}</td>
-                    <td class="fw-bold">{{ $category->name }}</td>
-                    <td>{{ $category->description ?? 'N/A' }}</td>
-                    <td>
-                        <span class="badge bg-primary">{{ $category->rooms->count() }}</span>
-                    </td>
-                    <td class="text-center">
-                        <form action="{{ route('admin.categories.update', $category) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('PUT')
-                            <div class="input-group input-group-sm" style="max-width: 200px;">
-                                <input type="text" name="name" value="{{ $category->name }}" 
-                                       class="form-control form-control-sm" required>
-                                <button type="submit" class="btn btn-outline-luxury">
-                                    <i class="fa-solid fa-save"></i>
-                                </button>
-                            </div>
-                        </form>
-                        <form action="{{ route('admin.categories.delete', $category) }}" method="POST" class="d-inline ms-2" 
-                              onsubmit="return confirm('Are you sure you want to delete this category?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                <i class="fa-solid fa-trash"></i>
+            @forelse($categories as $category)
+            <tr>
+                <td>{{ $category->id }}</td>
+
+                <!-- Display mode -->
+                <td class="fw-bold category-display-{{ $category->id }}">{{ $category->name }}</td>
+                <td class="category-display-{{ $category->id }}">
+                    {{ $category->description ?? 'N/A' }}
+                </td>
+
+                <td>
+                    <span class="badge bg-primary">{{ $category->rooms->count() }}</span>
+                </td>
+
+                <td class="text-center">
+                    <!-- Edit icon (shown by default) -->
+                    <button type="button" class="btn btn-sm btn-outline-luxury category-edit-btn-{{ $category->id }}" 
+                            onclick="toggleEdit({{ $category->id }})">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+
+                    <!-- Inline edit form (hidden by default) -->
+                    <form action="{{ route('admin.categories.update', $category) }}" method="POST" 
+                        class="d-none category-edit-form-{{ $category->id }} d-inline">
+                        @csrf
+                        @method('PUT')
+                        <div class="d-inline-flex gap-1" style="max-width: 320px;">
+                            <input type="text" name="name" value="{{ $category->name }}" 
+                                class="form-control form-control-sm" style="max-width: 120px;" required>
+                            <input type="text" name="description" value="{{ $category->description }}" 
+                                placeholder="Click to add description" 
+                                class="form-control form-control-sm {{ !$category->description ? 'text-muted fst-italic' : '' }}" 
+                                style="max-width: 140px;">
+                            <button type="submit" class="btn btn-sm btn-outline-luxury">
+                                <i class="fa-solid fa-save"></i>
                             </button>
-                        </form>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" class="text-center py-4 text-muted">
-                        <i class="fa-solid fa-tags fa-2x d-block mb-2"></i>
-                        No categories found. Add one using the form above.
-                    </td>
-                </tr>
-                @endforelse
+                            <button type="button" class="btn btn-sm btn-outline-secondary" 
+                                    onclick="toggleEdit({{ $category->id }})">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <form action="{{ route('admin.categories.delete', $category) }}" method="POST" class="d-inline ms-2" 
+                        onsubmit="return confirm('Are you sure you want to delete this category?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="5" class="text-center py-4 text-muted">
+                    <i class="fa-solid fa-tags fa-2x d-block mb-2"></i>
+                    No categories found. Add one using the form above.
+                </td>
+            </tr>
+            @endforelse
             </tbody>
         </table>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+function toggleEdit(id) {
+    document.querySelectorAll('.category-display-' + id).forEach(el => el.classList.toggle('d-none'));
+    document.querySelector('.category-edit-btn-' + id).classList.toggle('d-none');
+    document.querySelector('.category-edit-form-' + id).classList.toggle('d-none');
+}
+</script>
+@endpush

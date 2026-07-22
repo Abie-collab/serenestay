@@ -27,7 +27,7 @@
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="rooms.html">Rooms & Suites</a>
+                        <a class="nav-link" href="{{ route('rooms.index') }}">Rooms & Suites</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.html#services">Services</a>
@@ -92,12 +92,7 @@
                             <button class="nav-link text-start border-0 bg-transparent" id="tab-password-btn" data-bs-toggle="pill" data-bs-target="#tab-password" type="button" role="tab" aria-controls="tab-password" aria-selected="false">
                                 <i class="fa-solid fa-shield-halved"></i> Change Password
                             </button>
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="nav-link text-start text-danger border-0 bg-transparent w-100">
-                                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
-                                </button>
-                            </form>
+                            
                         </div>
                     </div>
                 </div>
@@ -116,41 +111,11 @@
                                         <p class="text-white-50 mb-0 small">You have 1 upcoming reservation this summer. Upgrade to PLATINUM status in 2 more stays.</p>
                                     </div>
                                     <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                                        <a href="rooms.html" class="btn btn-luxury btn-sm">Book Another Suite</a>
+                                        <a href="{{ route('rooms.index') }}" class="btn btn-luxury btn-sm">Book Another Suite</a>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Stat Cards -->
-                            <div class="row g-3 mb-4">
-                                <div class="col-md-4">
-                                    <div class="stat-card">
-                                        <div>
-                                            <span class="stat-label">Active Stays</span>
-                                            <h4 class="stat-value">1</h4>
-                                        </div>
-                                        <div class="stat-icon"><i class="fa-solid fa-calendar-days"></i></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="stat-card">
-                                        <div>
-                                            <span class="stat-label">Total Spent</span>
-                                            <h4 class="stat-value">$3,450</h4>
-                                        </div>
-                                        <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="stat-card">
-                                        <div>
-                                            <span class="stat-label">SereneStay Rewards</span>
-                                            <h4 class="stat-value">450 <span class="fs-6 text-muted">Pts</span></h4>
-                                        </div>
-                                        <div class="stat-icon"><i class="fa-solid fa-gem"></i></div>
-                                    </div>
-                                </div>
-                            </div>
 
                             <!-- Upcoming Bookings Alert -->
                             <div class="card card-luxury p-4 mb-4">
@@ -195,45 +160,22 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td class="font-monospace fw-bold">#SERENES-998822</td>
-                                                <td>Premium Executive Suite</td>
-                                                <td>Jul 20 &mdash; Jul 23, 2026</td>
-                                                <td>$1,480.00</td>
-                                                <td><span class="badge-status confirmed">Confirmed</span></td>
+                                                @foreach($bookings as $booking)
+                                                <td class="font-monospace fw-bold">{{ $booking->booking_reference }}</td>
+                                                <td>{{ $booking->room->title }}</td>
+                                                <td>{{ $booking->check_in->format('M d, Y')}} &mdash; {{ $booking->check_out->format('M d, Y')}}</td>
+                                                <td>{{ number_format($booking->total_price, 2) }}</td>
+                                                <td><span class="badge-status {{ $booking->status }}">{{ ucfirst($booking->status) }}</span></td>
                                                 <td class="text-center">
-                                                    <a href="room-details.html" class="btn btn-sm btn-outline-luxury py-1 px-3">View</a>
+                                                    @if($booking->status === 'confirmed')
+                                                        <form action="{{ route('booking.cancel', $booking) }}" method="POST" class="d-inline">
+                                                            @csrf @method('PATCH')
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                                                        </form>
+                                                    @endif
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td class="font-monospace fw-bold">#SERENES-817293</td>
-                                                <td>Deluxe Double Room</td>
-                                                <td>Mar 11 &mdash; Mar 15, 2026</td>
-                                                <td>$1,070.00</td>
-                                                <td><span class="badge-status completed">Completed</span></td>
-                                                <td class="text-center">
-                                                    <a href="#" class="btn btn-sm btn-outline-dark py-1 px-3">Invoice</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="font-monospace fw-bold">#SERENES-712893</td>
-                                                <td>Presidential Penthouse</td>
-                                                <td>Dec 24 &mdash; Dec 25, 2025</td>
-                                                <td>$980.00</td>
-                                                <td><span class="badge-status completed">Completed</span></td>
-                                                <td class="text-center">
-                                                    <a href="#" class="btn btn-sm btn-outline-dark py-1 px-3">Invoice</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="font-monospace fw-bold">#SERENES-602917</td>
-                                                <td>Deluxe Twin Room</td>
-                                                <td>Oct 05 &mdash; Oct 07, 2025</td>
-                                                <td>$460.00</td>
-                                                <td><span class="badge-status cancelled">Cancelled</span></td>
-                                                <td class="text-center">
-                                                    <span class="text-muted small">Refunded</span>
-                                                </td>
-                                            </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -385,6 +327,6 @@
     </footer>
 
     <!-- Bootstrap 5 Bundle JS -->
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset('/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>

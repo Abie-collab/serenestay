@@ -28,16 +28,16 @@
                 <tr>
                     <td>
                         @if($room->image)
-                            <img src="{{ Storage::url($room->image) }}" alt="{{ $room->name }}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+                            <img src="{{ Storage::url($room->image) }}" alt="{{ $room->title }}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
                         @else
                             <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                                 <i class="fa-solid fa-hotel text-muted"></i>
                             </div>
                         @endif
                     </td>
-                    <td class="fw-bold">{{ $room->name }}</td>
+                    <td class="fw-bold">{{ $room->title }}</td>
                     <td>{{ $room->category->name ?? 'N/A' }}</td>
-                    <td>${{ number_format($room->price, 2) }}</td>
+                    <td>${{ number_format($room->price_per_night, 2) }}</td>
                     <td>
                         <span class="badge-status 
                             @if($room->status === 'available') confirmed
@@ -48,6 +48,9 @@
                         </span>
                     </td>
                     <td class="text-center">
+                        <a href="{{ route('admin.rooms.show', $room) }}" class="btn btn-sm btn-outline-secondary py-1 px-3 me-1">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
                         <a href="{{ route('admin.rooms.edit', $room) }}" class="btn btn-sm btn-outline-luxury py-1 px-3 me-1">
                             <i class="fa-solid fa-edit"></i>
                         </a>
@@ -56,6 +59,7 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-3">
                                 <i class="fa-solid fa-trash"></i>
+        
                             </button>
                         </form>
                     </td>

@@ -10,7 +10,8 @@
     <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="/https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="/https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+      <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
 
@@ -37,7 +38,7 @@
                         <a class="nav-link {{ request()->routeIs('admin.categories*') ? 'active' : '' }}" href="{{ route('admin.categories') }}">Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard') }}">Main Site</a>
+                        <a class="nav-link" href="{{ url('/') }}">Main Site</a> 
                     </li>
                 </ul>
                 <div class="navbar-buttons d-flex align-items-center">
@@ -52,12 +53,15 @@
                             <li><a class="dropdown-item py-2 small" href="{{ route('admin.categories') }}"><i class="fa-solid fa-tags me-2 text-muted"></i> Categories</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
+                              
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="dropdown-item py-2 small text-danger">
                                         <i class="fa-solid fa-right-from-bracket me-2"></i> Log Out
                                     </button>
                                 </form>
+                             
+
                             </li>
                         </ul>
                     </div>
@@ -95,11 +99,9 @@
                             </a>
                             <a class="nav-link {{ request()->routeIs('admin.categories*') ? 'active' : '' }}" href="{{ route('admin.categories') }}">
                                 <i class="fa-solid fa-tags"></i> Categories
-                            </a>
-                            <a class="nav-link text-start text-danger text-decoration-none" href="{{ route('dashboard') }}">
-                                <i class="fa-solid fa-arrow-left"></i> Back to Site
-                            </a>
+                            </a>     
                         </div>
+                        
                     </div>
                 </div>
 
@@ -166,7 +168,7 @@
     </footer>
 
     <!-- Bootstrap 5 Bundle JS -->
-    <script src="{{asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{asset('/js/bootstrap.bundle.min.js') }}"></script>
     @stack('scripts')
 </body>
 </html>

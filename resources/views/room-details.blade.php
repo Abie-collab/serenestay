@@ -1,49 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Executive Suite Details | AURA Resort</title>
-    <meta name="description" content="View detailed features, photos, and reviews of the Premium Executive Suite. Reserve your luxury stay today.">
-    <!-- Bootstrap 5 CSS -->
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body class="bg-light">
+@extends("layouts.mainsite")
 
-    <!-- Header Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-luxury fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">AURA<span>RESORT</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarText">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-5">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="rooms.html">Rooms & Suites</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html#services">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html#testimonials">Reviews</a>
-                    </li>
-                </ul>
-                <div class="navbar-buttons">
-                    <a href="login.html" class="btn btn-outline-light btn-sm px-4 py-2 me-2 border-0">Sign In</a>
-                    <a href="register.html" class="btn btn-luxury btn-sm">Join Club</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
+    @section("hero")
     <!-- Subpage Hero banner -->
     <section class="py-5 text-white" style="background: var(--dark-gradient); padding-top: 8rem !important; border-bottom: 3px solid var(--primary-color);">
         <div class="container py-2">
@@ -51,13 +8,15 @@
                 <ol class="breadcrumb mb-2">
                     <li class="breadcrumb-item"><a href="index.html" class="text-white-50 text-decoration-none">Home</a></li>
                     <li class="breadcrumb-item"><a href="rooms.html" class="text-white-50 text-decoration-none">Rooms</a></li>
-                    <li class="breadcrumb-item active text-white" aria-current="page">Premium Executive Suite</li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">{{ $room->title }}</li>
                 </ol>
             </nav>
-            <h1 class="text-white mb-0">Premium Executive Suite</h1>
+            <h1 class="text-white mb-0">{{ $room->title }}</h1>
         </div>
     </section>
+    @endsection
 
+    @section("content")
     <!-- Room Details Section -->
     <main class="container my-5">
         <div class="row">
@@ -68,29 +27,16 @@
                 <!-- Main Gallery -->
                 <section class="mb-5">
                     <div class="room-gallery-main">
-                        <img src="assets/images/suite.jpg" alt="Premium Executive Suite Main Image" id="mainGalleryImage">
+                        <img src="{{ asset('storage/' . $room->image) }}" alt="{{ $room->title }}">
                     </div>
-                    <div class="room-gallery-thumbs">
-                        <div class="gallery-thumb active" onclick="document.getElementById('mainGalleryImage').src='assets/images/suite.jpg'; this.parentElement.querySelector('.active').classList.remove('active'); this.classList.add('active');">
-                            <img src="assets/images/suite.jpg" alt="Gallery 1">
-                        </div>
-                        <div class="gallery-thumb" onclick="document.getElementById('mainGalleryImage').src='assets/images/deluxe.jpg'; this.parentElement.querySelector('.active').classList.remove('active'); this.classList.add('active');">
-                            <img src="assets/images/deluxe.jpg" alt="Gallery 2">
-                        </div>
-                        <div class="gallery-thumb" onclick="document.getElementById('mainGalleryImage').src='assets/images/penthouse.jpg'; this.parentElement.querySelector('.active').classList.remove('active'); this.classList.add('active');">
-                            <img src="assets/images/penthouse.jpg" alt="Gallery 3">
-                        </div>
-                        <div class="gallery-thumb" onclick="document.getElementById('mainGalleryImage').src='assets/images/hero.jpg'; this.parentElement.querySelector('.active').classList.remove('active'); this.classList.add('active');">
-                            <img src="assets/images/hero.jpg" alt="Gallery 4">
-                        </div>
-                    </div>
+                    
                 </section>
 
                 <!-- Room Description and Details -->
                 <section class="mb-5">
                     <h3 class="mb-4 text-dark border-bottom pb-2">Description</h3>
-                    <p class="text-muted">The Premium Executive Suite is a hallmark of luxury design at AURA Resort. Boasting a massive private living room separate from the master bedroom, this suite is designed to accommodate both executive travelers requiring functional workspace and leisure couples looking for ultimate rest.</p>
-                    <p class="text-muted">From the private terrace terrace, you can enjoy stunning, uninterrupted sunrises over the azure ocean waters. Custom velvet lounge seating, marble work desks, and smart temperature panels throughout ensure comfort is constantly at your control.</p>
+                    <p class="text-muted">{{ $room->description }}.</p>
+                    
                     
                     <div class="row my-5 text-center g-3">
                         <div class="col-md-3 col-6">
@@ -192,7 +138,7 @@
                     <div class="card card-luxury p-4 mb-3">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex align-items-center gap-3">
-                                <img src="assets/images/avatar.jpg" alt="Guest" class="rounded-circle" style="width: 45px; height: 45px; object-fit: cover;">
+                                <img src="/assets/images/avatar.jpg" alt="Guest" class="rounded-circle" style="width: 45px; height: 45px; object-fit: cover;">
                                 <div>
                                     <h6 class="mb-0">Emma Johansson</h6>
                                     <span class="text-muted small">Stayed in May 2026</span>
@@ -233,50 +179,46 @@
             </div>
 
             <!-- Right Side Booking Widget -->
-            <div class="col-lg-4">
-                <div class="card-luxury p-4 sticky-summary">
-                    <h4 class="mb-3 text-dark">Book Your Stay</h4>
-                    <hr>
-                    <form action="booking.html" method="GET">
-                        <!-- Dates selection -->
-                        <div class="mb-3">
-                            <label for="check_in_details" class="form-label font-weight-bold small text-muted text-uppercase">Check-In</label>
-                            <input type="date" id="check_in_details" class="form-control" value="2026-07-20" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="check_out_details" class="form-label font-weight-bold small text-muted text-uppercase">Check-Out</label>
-                            <input type="date" id="check_out_details" class="form-control" value="2026-07-23" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="guests_details" class="form-label font-weight-bold small text-muted text-uppercase">Guests Count</label>
-                            <select id="guests_details" class="form-select">
-                                <option value="1">1 Guest</option>
-                                <option value="2" selected>2 Guests</option>
-                                <option value="3">3 Guests</option>
-                            </select>
-                        </div>
+            <form action="{{ route('booking.create', $room) }}" method="GET" id="booking-widget-form">
+    <!-- Dates selection -->
+    <div class="mb-3">
+        <label for="check_in_details" class="form-label font-weight-bold small text-muted text-uppercase">Check-In</label>
+        <input type="date" id="check_in_details" name="check_in" class="form-control" min="{{ now()->toDateString() }}" value="{{ now()->addDay()->toDateString() }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="check_out_details" class="form-label font-weight-bold small text-muted text-uppercase">Check-Out</label>
+        <input type="date" id="check_out_details" name="check_out" class="form-control" min="{{ now()->addDays(2)->toDateString() }}" value="{{ now()->addDays(4)->toDateString() }}" required>
+    </div>
+    <div class="mb-4">
+        <label for="guests_details" class="form-label font-weight-bold small text-muted text-uppercase">Guests Count</label>
+        <select id="guests_details" name="guests" class="form-select">
+            <option value="1">1 Guest</option>
+            <option value="2" selected>2 Guests</option>
+            <option value="3">3 Guests</option>
+        </select>
+    </div>
 
-                        <!-- Price Breakdown -->
-                        <h6 class="mb-3 text-dark small text-uppercase fw-bold">Price Calculation</h6>
-                        <div class="price-item">
-                            <span>$450 / night x 3 nights</span>
-                            <strong>$1,350.00</strong>
-                        </div>
-                        <div class="price-item">
-                            <span>Luxury Service Fee</span>
-                            <strong>$50.00</strong>
-                        </div>
-                        <div class="price-item">
-                            <span>City Occupancy Tax</span>
-                            <strong>$80.00</strong>
-                        </div>
-                        <div class="price-total">
-                            <span>Total Price</span>
-                            <span>$1,480.00</span>
-                        </div>
+    <!-- Price Breakdown -->
+    <h6 class="mb-3 text-dark small text-uppercase fw-bold">Price Calculation</h6>
+    <div class="price-item">
+        <span id="rate-label">${{ number_format($room->price_per_night, 2) }} / night x <span id="nights-count">2</span> nights</span>
+        <strong id="base-price">${{ number_format($room->price_per_night * 2, 2) }}</strong>
+    </div>
+    <div class="price-item">
+        <span>Luxury Service Fee</span>
+        <strong id="service-fee">$50.00</strong>
+    </div>
+    <div class="price-item">
+        <span>City Occupancy Tax</span>
+        <strong id="tax-amount">${{ number_format($room->price_per_night * 2 * 0.06, 2) }}</strong>
+    </div>
+    <div class="price-total">
+        <span>Total Price</span>
+        <span id="total-price">${{ number_format(($room->price_per_night * 2) + 50 + ($room->price_per_night * 2 * 0.06), 2) }}</span>
+    </div>
 
-                        <button type="submit" class="btn btn-luxury w-100 py-3 mt-4"><i class="fa-solid fa-credit-card me-2"></i>Proceed to Checkout</button>
-                    </form>
+    <button type="submit" class="btn btn-luxury w-100 py-3 mt-4"><i class="fa-solid fa-credit-card me-2"></i>Proceed to Checkout</button>
+</form>
                     <div class="text-center mt-3">
                         <span class="text-muted small"><i class="fa-solid fa-shield-halved me-1 text-success"></i> Best Price Guarantee Secured</span>
                     </div>
@@ -285,48 +227,37 @@
 
         </div>
     </main>
+    <script>
+    const pricePerNight = {{ $room->price_per_night }};
+    const serviceFee = 50;
+    const taxRate = 0.06;
 
-    <!-- Footer -->
-    <footer class="footer-luxury">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <a class="navbar-brand text-white fs-3 fw-bold mb-3 d-inline-block" href="index.html">AURA<span>RESORT</span></a>
-                    <p class="mt-2 text-white-50">Our mission is to construct a modern sanctuary for travel lovers, combining high-end design aesthetics with gold-standard services.</p>
-                    <div class="footer-social-icons">
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 ms-lg-auto">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled mt-3">
-                        <li class="mb-2"><a href="rooms.html">Rooms & Suites</a></li>
-                        <li class="mb-2"><a href="index.html#services">Our Services</a></li>
-                        <li class="mb-2"><a href="login.html">Member Portal</a></li>
-                        <li class="mb-2"><a href="register.html">Loyalty Program</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5>Contacts</h5>
-                    <ul class="list-unstyled mt-3 text-white-50">
-                        <li class="mb-2"><i class="fa-solid fa-location-dot text-primary me-2"></i> 777 Luxury Boulevard, Las Vegas, NV</li>
-                        <li class="mb-2"><i class="fa-solid fa-phone text-primary me-2"></i> +1 (800) 555-AURA</li>
-                        <li class="mb-2"><i class="fa-solid fa-envelope text-primary me-2"></i> reservations@auraresort.com</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row footer-bottom text-center text-white-50">
-                <div class="col-md-12">
-                    <p class="mb-0">&copy; 2026 AURA Resort. Designed for Luxury Voyagers. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    const checkInInput  = document.getElementById('check_in_details');
+    const checkOutInput = document.getElementById('check_out_details');
 
-    <!-- Bootstrap 5 Bundle JS -->
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    function recalculatePrice() {
+        const checkIn  = new Date(checkInInput.value);
+        const checkOut = new Date(checkOutInput.value);
+        const nights   = Math.round((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+
+        if (nights <= 0) return;
+
+        const basePrice = pricePerNight * nights;
+        const taxAmount = basePrice * taxRate;
+        const total     = basePrice + serviceFee + taxAmount;
+
+        document.getElementById('nights-count').textContent = nights;
+        document.getElementById('base-price').textContent = '$' + basePrice.toFixed(2);
+        document.getElementById('tax-amount').textContent = '$' + taxAmount.toFixed(2);
+        document.getElementById('total-price').textContent = '$' + total.toFixed(2);
+
+        // Keep checkout min date one day after checkin
+        checkOutInput.min = new Date(checkIn.getTime() + 86400000).toISOString().split('T')[0];
+    }
+
+    checkInInput.addEventListener('change', recalculatePrice);
+    checkOutInput.addEventListener('change', recalculatePrice);
+</script>
+    @endsection
+
+  

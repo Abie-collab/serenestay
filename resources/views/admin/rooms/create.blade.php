@@ -16,11 +16,11 @@
 
         <div class="row g-3">
             <div class="col-md-6">
-                <label for="name" class="form-label text-muted small fw-bold">Room Name</label>
-                <input type="text" id="name" name="name" value="{{ old('name') }}" 
-                       class="form-control @error('name') is-invalid @enderror" 
+                <label for="title" class="form-label text-muted small fw-bold">Room Name</label>
+                <input type="text" id="title" name="title" value="{{ old('title') }}" 
+                       class="form-control @error('title') is-invalid @enderror" 
                        placeholder="e.g., Deluxe Ocean View" required>
-                @error('name')
+                @error('title')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -42,14 +42,14 @@
             </div>
 
             <div class="col-md-6">
-                <label for="price" class="form-label text-muted small fw-bold">Price per Night</label>
+                <label for="price_per_night" class="form-label text-muted small fw-bold">Price per Night</label>
                 <div class="input-group">
                     <span class="input-group-text bg-light">$</span>
-                    <input type="number" id="price" name="price" value="{{ old('price') }}" 
-                           class="form-control @error('price') is-invalid @enderror" 
+                    <input type="number" id="price_per_night" name="price_per_night" value="{{ old('price_per_night') }}" 
+                           class="form-control @error('price_per_night') is-invalid @enderror" 
                            placeholder="0.00" step="0.01" required>
                 </div>
-                @error('price')
+                @error('price_per_night')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -63,6 +63,16 @@
                     <option value="maintenance" {{ old('status') == 'maintenance' ? 'selected' : '' }}>Maintenance</option>
                 </select>
                 @error('status')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-12">
+                <label for="short_description" class="form-label text-muted small fw-bold">Short Description</label>
+                <input type="text" id="short_description" name="short_description" value="{{ old('short_description') }}" 
+                       class="form-control @error('short_description') is-invalid @enderror" 
+                       placeholder="A brief one-line summary shown on room cards" maxlength="500">
+                @error('short_description')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
