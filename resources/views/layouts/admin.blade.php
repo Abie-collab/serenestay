@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin Dashboard') - {{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', 'Admin Dashboard')</title>
 
     <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- Font Awesome Icons -->
-    <!-- <link rel="stylesheet" href="/https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
       <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">

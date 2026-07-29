@@ -1,5 +1,6 @@
 @extends("layouts.mainsite")
 
+   
     @section("hero")
    <!-- Hero Section -->
     <header class="hero-section">
@@ -8,7 +9,7 @@
                 <div class="col-lg-8 text-white">
                     <h1 class="hero-title">Experience Sanctuary in the Heart of Luxury</h1>
                     <p class="hero-subtitle">Immerse yourself in world-class amenities, stunning views, and an uncompromised level of personalized service tailored for the modern voyager.</p>
-                    <a href="rooms.html" class="btn btn-luxury btn-lg">Explore Suites</a>
+                    <a href="{{ route('rooms.index') }}" class="btn btn-luxury btn-lg">Explore Suites</a>
                 </div>
             </div>
         </div>
@@ -21,7 +22,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="search-widget">
-                    <form action="rooms.html" method="GET">
+                    <form action="{{ route('rooms.index') }}" method="GET">
                         <div class="row g-3 align-items-end">
                             <div class="col-md-3">
                                 <label for="check_in" class="form-label">Check-In Date</label>
@@ -55,9 +56,9 @@
                                     <span class="input-group-text bg-white border-end-0 text-muted"><i class="fa-solid fa-bed"></i></span>
                                     <select id="room_type" class="form-select border-start-0">
                                         <option value="all">All Rooms</option>
-                                        <option value="deluxe">Deluxe Room</option>
-                                        <option value="suite">Luxury Suite</option>
-                                        <option value="penthouse">Penthouse</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->slug }}">{{ $category->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

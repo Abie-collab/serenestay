@@ -66,7 +66,7 @@ class BookingController extends Controller
     public function confirmation(Booking $booking)
     {
         abort_unless($booking->user_id === auth()->id(), 403);
-        return view('booking-confirmation', compact('booking'));
+        return view('booking_confirmation', compact('booking'));
     }
 
     public function dashboard()

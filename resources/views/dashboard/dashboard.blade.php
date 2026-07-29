@@ -17,23 +17,20 @@
     <!-- Header Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-luxury fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Serene<span>Stay</span></a>
+            <a class="navbar-brand" href="{{ url('/') }}">Serene<span>Stay</span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-5">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
+                        <a class="nav-link" href="{{ url('/') }}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('rooms.index') }}">Rooms & Suites</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html#services">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html#testimonials">Reviews</a>
+                        <a class="nav-link" href="{{ url('/#testimonials') }}">Reviews</a>
                     </li>
                 </ul>
                 <div class="navbar-buttons d-flex align-items-center">
@@ -107,8 +104,14 @@
                             <div class="card card-luxury p-4 mb-4" style="background: var(--dark-gradient); color: white; border: none;">
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
-                                        <h3 class="text-white mb-2">Welcome back,{{ auth()->user()->name }}</h3>
-                                        <p class="text-white-50 mb-0 small">You have 1 upcoming reservation this summer. Upgrade to PLATINUM status in 2 more stays.</p>
+                                        <h3 class="text-white mb-2">Welcome back, {{ auth()->user()->name }}</h3>
+                                        <p class="text-white-50 mb-0 small">
+                                            @if($upcoming)
+                                                You have an upcoming reservation on {{ $upcoming->check_in->format('M d') }}.
+                                            @else
+                                                You have no upcoming reservations right now.
+                                            @endif
+                                        </p>
                                     </div>
                                     <div class="col-md-4 text-md-end mt-3 mt-md-0">
                                         <a href="{{ route('rooms.index') }}" class="btn btn-luxury btn-sm">Book Another Suite</a>
@@ -118,24 +121,32 @@
 
 
                             <!-- Upcoming Bookings Alert -->
-                            <div class="card card-luxury p-4 mb-4">
-                                <h5 class="mb-3 text-dark border-bottom pb-2">Upcoming Reservation</h5>
+                           <div class="card card-luxury p-4 mb-4">
+                             <h5 class="mb-3 text-dark border-bottom pb-2">Upcoming Reservation</h5>
+                            @if($upcoming)
                                 <div class="row align-items-center">
                                     <div class="col-md-3">
-                                        <img src="assets/images/suite.jpg" alt="Booking Suite" class="img-fluid rounded-3" style="object-fit: cover; aspect-ratio: 4 / 3;">
+                                        <img src="{{ $upcoming->room->image ? asset('storage/' . $upcoming->room->image) : 'assets/images/suite.jpg' }}"
+                                            alt="{{ $upcoming->room->title }}" class="img-fluid rounded-3" style="object-fit: cover; aspect-ratio: 4 / 3;">
                                     </div>
                                     <div class="col-md-6 mt-3 mt-md-0">
-                                        <span class="badge bg-success mb-2 px-2 py-1">CONFIRMED</span>
-                                        <h6 class="mb-1 text-dark text-uppercase small font-weight-bold">#SERENES-2026-998822</h6>
-                                        <h5 class="text-dark mb-2">Premium Executive Suite</h5>
-                                        <p class="text-muted small mb-0"><i class="fa-regular fa-calendar me-2"></i>Jul 20 &mdash; Jul 23, 2026 (3 nights)</p>
+                                        <span class="badge bg-success mb-2 px-2 py-1">{{ strtoupper($upcoming->status) }}</span>
+                                        <h6 class="mb-1 text-dark text-uppercase small font-weight-bold">#{{ $upcoming->booking_reference }}</h6>
+                                        <h5 class="text-dark mb-2">{{ $upcoming->room->title }}</h5>
+                                        <p class="text-muted small mb-0">
+                                            <i class="fa-regular fa-calendar me-2"></i>
+                                            {{ $upcoming->check_in->format('M d') }} &mdash; {{ $upcoming->check_out->format('M d, Y') }}
+                                            ({{ $upcoming->nights }} {{ Str::plural('night', $upcoming->nights) }})
+                                        </p>
                                     </div>
                                     <div class="col-md-3 text-md-end mt-3 mt-md-0 d-grid d-md-block">
-                                        <a href="room-details.html" class="btn btn-outline-luxury btn-sm mb-2">View Details</a>
+                                        <a href="{{ route('rooms.show', $upcoming->room) }}" class="btn btn-outline-luxury btn-sm mb-2">View Details</a>
                                         <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelModal">Cancel Booking</button>
                                     </div>
                                 </div>
-                            </div>
+                            @else
+                                <p class="text-muted small mb-0">You have no upcoming reservations. <a href="{{ route('rooms.index') }}">Book a suite</a> to get started.</p>
+                            @endif
                         </div>
 
                         <!-- TAB: MY BOOKINGS -->
@@ -262,29 +273,34 @@
         </div>
     </main>
 
-    <!-- Cancellation Confirmation Modal (Bootstrap 5 Modal) -->
-    <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
-                <div class="modal-header bg-danger text-white border-0 py-3">
-                    <h5 class="modal-title" id="cancelModalLabel"><i class="fa-solid fa-circle-exclamation me-2"></i>Cancel Reservation</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4 text-start">
-                    <p class="mb-3 text-dark">Are you absolutely sure you wish to cancel your booking for the <strong>Premium Executive Suite</strong> (#SERENES-2026-998822)?</p>
-                    <div class="alert alert-warning border-0 rounded-3 small py-3 mb-0">
-                        <i class="fa-solid fa-circle-info text-warning me-1"></i> Since you are within the cancellation period (before July 18), a full refund of <strong>$1,480.00</strong> will be credited to your Visa ending in 4444.
+    <!-- Cancellation Confirmation Modal -->
+    @if($upcoming)
+        <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+                    <div class="modal-header bg-danger text-white border-0 py-3">
+                        <h5 class="modal-title" id="cancelModalLabel"><i class="fa-solid fa-circle-exclamation me-2"></i>Cancel Reservation</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-                <div class="modal-footer border-0 bg-light p-3">
-                    <button type="button" class="btn btn-secondary px-4 py-2 border-0 bg-transparent text-muted small" data-bs-dismiss="modal">Keep Booking</button>
-                    <form action="dashboard.html" method="GET" class="d-inline">
-                        <button type="submit" class="btn btn-danger px-4 py-2">Confirm Cancellation</button>
-                    </form>
+                    <div class="modal-body p-4 text-start">
+                        <p class="mb-3 text-dark">Are you sure you wish to cancel your booking for the
+                            <strong>{{ $upcoming->room->title }}</strong> (#{{ $upcoming->booking_reference }})?</p>
+                        <div class="alert alert-warning border-0 rounded-3 small py-3 mb-0">
+                            <i class="fa-solid fa-circle-info text-warning me-1"></i>
+                            A refund of <strong>${{ number_format($upcoming->total_price, 2) }}</strong> may apply per our cancellation policy.
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 bg-light p-3">
+                        <button type="button" class="btn btn-secondary px-4 py-2 border-0 bg-transparent text-muted small" data-bs-dismiss="modal">Keep Booking</button>
+                        <form action="{{ route('booking.cancel', $upcoming) }}" method="POST" class="d-inline">
+                            @csrf @method('PATCH')
+                            <button type="submit" class="btn btn-danger px-4 py-2">Confirm Cancellation</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        @endif
 
     <!-- Footer -->
     <footer class="footer-luxury">
@@ -303,10 +319,10 @@
                 <div class="col-lg-2 col-md-6 ms-lg-auto">
                     <h5>Quick Links</h5>
                     <ul class="list-unstyled mt-3">
-                        <li class="mb-2"><a href="rooms.html">Rooms & Suites</a></li>
-                        <li class="mb-2"><a href="index.html#services">Our Services</a></li>
-                        <li class="mb-2"><a href="login.html">Member Portal</a></li>
-                        <li class="mb-2"><a href="register.html">Loyalty Program</a></li>
+                        <li class="mb-2"><a href="{{ route('rooms.index') }}">Rooms & Suites</a></li>
+                        <li class="mb-2"><a href="{{ url('/#services') }}">Our Services</a></li>
+                        <li class="mb-2"><a href="{{ route('login') }}">Member Portal</a></li>
+                        <li class="mb-2"><a href="{{ route('register') }}">Loyalty Program</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6">

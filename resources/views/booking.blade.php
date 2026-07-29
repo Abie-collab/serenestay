@@ -178,13 +178,13 @@
                     </div>
 
                     <!-- Free cancellation alert -->
-                    <div class="alert alert-success border-0 rounded-3 mt-4 mb-0 py-3 small d-flex align-items-center gap-2">
+                    <!-- <div class="alert alert-success border-0 rounded-3 mt-4 mb-0 py-3 small d-flex align-items-center gap-2">
                         <i class="fa-regular fa-calendar-check text-success fs-5"></i>
                         <div>
                             <strong>Free Cancellation</strong><br>
                             Before July 18, 2026. Refund policy applies.
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 

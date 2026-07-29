@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Sign In | SereneStay</title>
+    <title>Sign In | SereneStay</title>
     <meta name="description" content="Log in to your SereneStay account to check bookings, upgrade loyalty levels, and edit preferences.">
     <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">

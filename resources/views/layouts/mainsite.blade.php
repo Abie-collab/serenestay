@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title')</title>
+    <title>SERENESTAY</title>
     <meta name="description" content="Experience high-end sanctuary in the heart of luxury. Book Deluxe Rooms, Luxury Suites, and Presidential Penthouses.">
     <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -17,20 +17,17 @@
     <!-- Header Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-luxury fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Serene<span>Stay</span></a>
+            <a class="navbar-brand" href="{{ url('/') }}">Serene<span>Stay</span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-5">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                        <a class="nav-link active" aria-current="page" href="{{ url('/') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="rooms.html">Rooms & Suites</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#services">Services</a>
+                        <a class="nav-link" href="{{ route('rooms.index') }}">Rooms & Suites</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#testimonials">Reviews</a>

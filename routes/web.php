@@ -4,10 +4,13 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Category;
 
 Route::get('/', function () {
-    return view('index');
+    $categories = Category::orderBy('name')->get();
+    return view('index', compact('categories'));
 });
+
 
 Route::get('/dashboard', [BookingController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
